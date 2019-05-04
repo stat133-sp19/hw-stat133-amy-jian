@@ -1,0 +1,76 @@
+---
+title: "Workout 3"
+author: "Amy Jian"
+date: "5/3/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Overview
+'binomial' is a package that implements functionsfor calculating probabilities of a binomial random variable and other related caculations such as the probability distribution and expected value.
+
+* 'bin_choose( )' computes number of combinations of k successes in n trials
+* 'bin_probability( )' computes 
+* 'bin_distribution( )' creates a 'bindis' object, a data frame of the probability distribution
+* 'bin_cumulative( )' creates 'bincum' object, a data frame of the cumulative probability distribution
+* 'plot( ) method for 'bindis' and 'bincum' objects to plot probabilities of successes
+* 'bin_var' creates a 'binvar' object
+* 'summary( )' method for 'binvar' object
+* individual summary measures:
+    * 'bin_mean( )'
+    * 'bin_variance( )'
+    * 'bin_mode( )'
+    * 'bin_skewness( )'
+    * 'bin_kurtosis( )'
+
+##Usage
+```{r}
+library(binomial)
+```
+```{r}
+#number of combinations of 3 successes in 5 trials
+bin_choose(n = 5, k = 3)
+```
+```{r}
+#probability of 3 successes in 5 trials with success probability 0.7
+bin_probability(success = 3, trials = 5, prob = 0.7)
+```
+```{r}
+#binomial probability distribution
+dis1 <- bin_distribution(trials = 5, prob = 0.7)
+dis1
+```
+```{r}
+#plot probability distribution
+plot(dis1)
+```
+```{r}
+#binomial cumulative distribution
+dis2 <- bin_cumulative(trials = 5, prob = 0.7)
+dis2
+```
+```{r}
+#plot cumulative distribution
+plot(dis2)
+```
+```{r}
+#binomial random variable
+bin <- bin_variable(trials = 5, prob = 0.7)
+bin
+```
+```{r}
+#summary of a binomial random variable
+summary(bin)
+```
+```{r}
+#indiviudal summary measures
+bin_mean(trials = 5, prob = 0.7)
+bin_variance(trials = 5, prob = 0.7)
+bin_mode(trials = 5, prob = 0.7)
+bin_skewness(trials = 5, prob = 0.7)
+bin_kurtosis(trials = 5, prob = 0.7)
+```
+

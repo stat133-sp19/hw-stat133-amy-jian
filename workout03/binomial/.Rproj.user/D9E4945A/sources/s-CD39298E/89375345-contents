@@ -1,0 +1,26 @@
+#' @title Binomial Distribution
+#' @description Creates an object of class bindis
+#' @param trials number of trials
+#' @param prob probability of a success
+#' @return an object of class bindis
+#' @return a data frame containing all possible success values and their corresponding probabilities
+#' @export
+#' @examples
+#' bin_distribution(3, 0.5)
+#'
+#' bin_distribution(trials = 4, prob = 0.7)
+#'
+bin_distribution <- function(trials, prob) {
+  success <- 0:trials
+  probability <- bin_probability(success, trials, prob)
+  dis <- data.frame(success, probability)
+  class(dis) <- c('bindis', 'data.frame')
+  return(dis)
+}
+
+
+#' @export
+#' @import ggplot2
+plot.bindis <- function(x, ...) {
+  ggplot(x) + geom_bar(aes(success, probability), stat = 'identity')
+}

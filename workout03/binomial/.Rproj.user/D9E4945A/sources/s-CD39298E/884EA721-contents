@@ -1,0 +1,145 @@
+---
+title: "Introduction to binomial"
+author: "Amy Jian"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introductio to binomial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(binomial)
+```
+
+The package 'binomial' implements functions for calculating probabilities of a Binomial random variable, and related calculations such as the probability distribution, the expected value, variance, etc.
+
+##Combinations with bin_choose( )
+
+Suppose we want to know how many combinations of size _k_ can be created from a group of _n_ items or $\binom{n}{k}$. We can calculate this using 'bin_choose( )'.
+
+For example we can find the number of combinations in which 3 successes can occur in 5 trials:
+```{r}
+bin_choose(n = 5, k = 3)
+```
+
+'bin_choose( )' only accepts arguments where _k_ is less than _n_.
+
+##Binomial Probability
+
+'bin_probability( )' calculates the binomial probability:
+$$P(X=k) = \binom{n}{k}p^{k}(1-p)^{n-k}$$
+where:
+  
+  * _n_ is the fixed number of trials (_n_ ≥ 0)
+  * _p_ is the probability of success in each trial (0 ≤ _p_ ≤ 1)
+  * _1-p_ is the probability of failure in each trial
+  * _k_ is number of successes out of _n_ trials (0 ≤ _k_ ≤ _n_)
+
+Suppose we want to find the probability that we get 4 heads out of 6 tosses of a fair coin. Then we can use 'bin_probability( )':
+```{r}
+bin_probability(success=4, trials = 6, prob = 0.5)
+```
+
+'bin_probability( )' can also take in a vector of success values. To find the probability of getting 1, 2, and 4 heads out of 6 tosses of a fair coin:
+```{r}
+bin_probability(success = c(1, 2, 4), trials = 6, prob = 0.5)
+```
+
+##Binomial Distribution
+
+'bin_probability( )' calculates the binomial probability of select numbers of sucesses. Now suppose we want to know the binomial probability for every possible number of successes out of _n_ trials. 'bin_distribution( )' displays a data frame of the entire probability distribution of a binomial random variable with _n_ trials and probability of success _p_.
+
+The binomial probability distribution with _n_ = 5 and _p_ = 0.5:
+```{r}
+distribution <- bin_distribution(trials = 5, prob = 0.5)
+distribution
+```
+
+'plot( )' will produce a graphic of the probabilities of successes:
+```{r}
+plot(distribution)
+```
+
+##Cumulative Distribution
+
+So far we have been looking only at the probabilities of exactly _k_ successes in _n_ trials $P(X = k)$. Now suppose we want to know the cumulative probability $P(X≤k)$, the probability that we get _k_ or less successes in _n_ trials. 'bin_cumulative( )' displays a data frame of the probability distribution and the cumulative probability values.
+
+For a binomial random variable with _n_ = 5 and _p_ = 0.5, the cumulative disribution would be:
+```{r}
+cumulative <- bin_cumulative(trials = 5, prob = 0.5)
+cumulative
+```
+
+'plot( )' will produce a graphic of the cumulative probabilities of successes:
+```{r}
+plot(cumulative)
+```
+
+##Summary measures
+Suppose we want to know more about a binomial variable such as its mean, variance, etc.
+
+###Creating a 'binvar'
+The first step is to create a 'binvar' object using 'bin_variable( )'. We must specify the number of trials _n_ and the probability of success _p._
+
+A binomial variable with _n_ = 5 and _p_ = 0.5:
+```{r}
+myvariable <- bin_variable(trials = 5, prob = 0.5)
+myvariable
+```
+
+###Displaying a summary
+Once we have a 'binvar' object, we can use 'summary( )' to display the following measures:
+  
+  * mean or expected value
+  * variance
+  * mode(s)
+  * skewness, the measure of the asymmetry of the probability distribution about the mean
+  * kurtosis, the measure of "tailedness" of the probability distribution
+  
+```{r}
+summary(myvariable)
+```
+
+###Specific summary measures
+Suppose we don't want to find all the summary values of a binomial variable; we just want one specific measure like the mean or mode(s). The following functions take in 2 inputs, number of trials _n_ and probability of success _p_, and calculates a single summary measure.
+
+* 'bin_mean( )'
+* 'bin_variance( )'
+* 'bin_mode( )'
+* 'bin_skewness( )'
+* 'bin_kurtosis( )'
+
+Let's use a binomial variable with _n_ = 5 and _p_ = 0.5
+
+To find the mean:
+```{r}
+bin_mean(trials = 5, prob = 0.5)
+```
+To find the variance:
+```{r}
+bin_variance(trials = 5, prob = 0.5)
+```
+To find the mode(s):
+```{r}
+bin_mode(trials = 5, prob = 0.5)
+```
+Note: If there is a unique mode, 'bin_mode( )' will return a single value. Otherwise, it may return a vector of 2 values (as seen in above example).
+
+Example of unique mode:
+```{r}
+bin_mode(trials = 4, prob = 0.5)
+```
+To find the skewness:
+```{r}
+bin_skewness(trials = 5, prob = 0.5)
+```
+To find the kurtosis:
+```{r}
+bin_kurtosis(trials = 5, prob = 0.5)
+```
